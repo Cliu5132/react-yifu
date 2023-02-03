@@ -3,6 +3,7 @@ import {
   getAuth,
   signInWithRedirect,
   signInWithPopup,
+  signInWithEmailAndPassword,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
 } from 'firebase/auth'
@@ -23,7 +24,7 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID,
 }
 
-const firebaseApp = initializeApp(firebaseConfig)
+initializeApp(firebaseConfig)
 
 const glgProvider = new GoogleAuthProvider()
 
@@ -65,19 +66,23 @@ export const createUserDocumentFromAuth = async (userAuth) => {
     }catch(err){
       console.log(`error creating the user: ${err.message}`)
     }
-
-    return userDocRef
   }
 
   //check if user data exists
   // return user doc ref
+  return userDocRef
 }
 
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
   if(!email || !password) return
 
-  if(!auth) return
-
   const userDoc = await createUserWithEmailAndPassword(auth, email, password)
+  return userDoc
+}
+
+export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+  if(!email || !password) return
+
+  const userDoc = await signInWithEmailAndPassword(auth, email, password)
   return userDoc
 }
